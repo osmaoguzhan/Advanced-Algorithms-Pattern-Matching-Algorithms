@@ -36,13 +36,15 @@ void search(char **pat, char **txt,long int q,int txtRow,int txtCol,int K)
     // touring inside the matrix
     for (int i = 0; i <=txtRow - K; i++) {
     	for(int j=0;j<=txtCol-K;j++){
-            //text hashing
+            //text computation.   Here the code is calculating hash of text which is equal to pattern
         	t=0;
             for(int m=i;m<i+K;m++){
 				for (int n = j; n <j+K; n++) {
         			t = ((d * t + txt[m][n]) & q);
+        			
     			}
     		}
+    		printf("New hash : %d  = pattern hash : %d\n",t,p); //Print newly calculated text hashes and pattern hash
             //if the hashes are equal then do brute force
     		if (p == t) {
 				for ( k = 0; k<K ; k++){
@@ -61,7 +63,7 @@ void search(char **pat, char **txt,long int q,int txtRow,int txtCol,int K)
 }
 int main(){
 	srand(time(NULL));
-	char *alphabet="10";
+	char *alphabet="abcdefg";
 	int M,N,K;
 	printf("Row number:");
 	scanf("%d",&M);
@@ -75,15 +77,13 @@ int main(){
 		char **tDarray = (char **)malloc(M * sizeof(char *));
     	for (int i=0; i<M; i++)
          	tDarray[i] = (char *)malloc(N * sizeof(char));
-		int patRow =(int)ceil(M/3.0);
-		int patCol =(int)ceil(N/3.0);
-    	char **pattern = (char **)malloc(patRow * sizeof(char *));
-    	for (int i=0; i<M; i++)
-         	pattern[i] = (char *)malloc(patCol* sizeof(char));
+    	char **pattern = (char **)malloc(K * sizeof(char *));
+    	for (int i=0; i<K; i++)
+         	pattern[i] = (char *)malloc(K* sizeof(char));
     	//random matrix
 		for(int i=0;i<M;i++){
 			for(int j=0;j<N;j++){
-				int random=rand()%2;
+				int random=rand()%7;
 				tDarray[i][j]=alphabet[random];
 			}
 		}

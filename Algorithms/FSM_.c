@@ -45,7 +45,7 @@ void search(char *pat, char *txt)
     {
         state = TF[state][txt[i]];
         if (state == M)
-            printf ("Pattern found at index %d\n",i-M+1);
+            ;
     }
 }
 char *FileToString(FILE *infile){
@@ -63,15 +63,15 @@ int main()
 {
 	uint64_t diff;
 	struct timespec start, end;
+	FILE *infile = fopen("char.txt", "r");
+    char word[] = "himself";
+	char *text = FileToString(infile);
 	clock_gettime(CLOCK_MONOTONIC, &start);
-	FILE *infile = fopen("10000.txt", "r");
-    char pat[] = "And he looked over at the alarm clock, ticking on the chest of drawers. \"God in Heaven!\" he thought. It was half past six and the hands were quietly moving forwards, it was even later than half past, more like quarter to seven. Had the alarm clock not rung? He could see from the bed that it had been set for four o'clock as it should have been; it certainly must have rung. Yes, but was it possible to quietly sleep through that furniture-rattling noise? True, he had not slept peacefully, but probably all the more deeply because of that. What should he do now? The next train went at seven; if he were to catch that he would have to rush like mad and the collection of samples was still not packed, and he did not at all feel particularly fresh and lively.";
-	search(pat,FileToString(infile));
-	fclose(infile);
+	search(word,text);
 	clock_gettime(CLOCK_MONOTONIC, &end);
 	diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
 	printf("elapsed time = %llu nanoseconds\n", (long long unsigned int) diff);
-  
+  	fclose(infile);
     
     return 0;
 }

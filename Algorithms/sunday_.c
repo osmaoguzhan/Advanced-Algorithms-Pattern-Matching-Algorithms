@@ -28,7 +28,7 @@ void sunday(char *P,char *T){
             j++;
         }
         if(j==m){
-        	printf("Ann occ at %d\n",i);
+        	;
         }
     }
     if(i==n-m){
@@ -38,8 +38,7 @@ void sunday(char *P,char *T){
             j++;
         }
         if(j==m){
-        	int a=0;
-            printf("Ann occ at %d\n",i);
+            ;
         }
     }
 	
@@ -59,10 +58,11 @@ int main()
 {
 	uint64_t diff;
 	struct timespec start, end;
-	FILE *infile = fopen("10000.txt", "r");
-	char P[] = "he";
+	FILE *infile = fopen("char.txt", "r");
+	char word[] = "himself";
+	char *text = FileToString(infile);
 	clock_gettime(CLOCK_MONOTONIC, &start);
-	sunday(P,FileToString(infile));
+	sunday(word,text);
     clock_gettime(CLOCK_MONOTONIC, &end);
 	diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
 	printf("elapsed time = %11u nanoseconds\n", (long long unsigned int) diff); 

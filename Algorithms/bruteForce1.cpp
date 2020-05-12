@@ -3,7 +3,28 @@
 #include <stdlib.h>
 #include <stdint.h>	/* for uint64 definition */
 #include <time.h>	/* for clock_gettime */
+#include <windows.h>
 #define BILLION 1000000000L
+double PCFreq = 0.0;
+__int64 CounterStart = 0;
+
+void StartCounter()
+{
+    LARGE_INTEGER li;
+   if(!QueryPerformanceFrequency(&li))
+    	printf("QueryPerformanceFrequency failed!\n");
+
+    PCFreq = double(li.QuadPart)/1000000000.0;
+
+    QueryPerformanceCounter(&li);
+    CounterStart = li.QuadPart;
+}
+double GetCounter()
+{
+    LARGE_INTEGER li;
+    QueryPerformanceCounter(&li);
+    return double((li.QuadPart-CounterStart)/PCFreq) ;
+}
 char *FileToString(FILE *fp){
     char *buffer;
     long numbytes;
@@ -32,16 +53,16 @@ void bruteForce(char *text,char *word){
 
 int main(){
 	
+   
 	uint64_t diff;
 	struct timespec start, end;
     FILE *fp = fopen("char.txt", "r");
     char word[] = "himself";
-	char *text = FileToString(fp);
-	clock_gettime(CLOCK_MONOTONIC, &start);
+	char *text=FileToString(fp);
+	StartCounter();
 	bruteForce(text,word);
-    clock_gettime(CLOCK_MONOTONIC, &end);
-	diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
-	printf("CLOCK_MONOTONIC = %llu nanoseconds\n", (long long unsigned int) diff);
-	
+	float counter = GetCounter();
+	printf("QueryPerformanceCounter = %0.10f",counter);
+    
 	return 0;
 }
